@@ -1,4 +1,4 @@
-function generateKtrussOutputFile(fname, output_fname)
+function generateKtrussOutputFile(fname, output_fname, K)
 
 %inc_mtx_file = '../../../data/ktruss_example.tsv';
 inc_mtx_file = fname;
@@ -11,8 +11,12 @@ E_expected =  [1  1  0  0  0; ...
                0  0  0  0  0];
 
 
-E = ktruss(inc_mtx_file, 3);
-[idx1,idx2,vertex] = find(E);
+E = ktruss(inc_mtx_file, K);
+A = E*E';
+A = A - diag(diag(A));
+
+[idx1,idx2,vertex] = find(A);
+size(idx1)
 
 f = fopen(output_fname, 'w');
 for c = 1:size(idx1) 
